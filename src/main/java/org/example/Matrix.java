@@ -2,23 +2,20 @@ package org.example;
 
 import java.lang.Math;
 import java.util.List;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 
 public class Matrix<T>
 {
-
     public int height, width;
     public List<List<T>> m;
 
     //конструктор для створення пустої матриці
     public Matrix()
     {
+        m = new ArrayList<>();
         height = 0;
         width = 0;
-
-        m = new ArrayList<>();
     }
 
     //конструктор для створення матриці заданого розміру
@@ -28,7 +25,7 @@ public class Matrix<T>
         this.width = width;
 
         m = new ArrayList<>();
-
+        //заповнення матриці
         for (int i = 0; i < height; i++)
         {
             m.add(new ArrayList<>());
@@ -56,20 +53,20 @@ public class Matrix<T>
         }
     }
 
-    public Matrix(int row, int column, List<T> numbers)
+    public Matrix(int height, int width, List<T> elem)
     {
-        this.height = row;
-        this.width = column;
+        this.height = height;
+        this.width = width;
 
         m = new ArrayList<>();
-        int counter = 0;
-        for (int i = 0; i < row; i++)
+        int n = 0;
+        for (int i = 0; i < height; i++)
         {
             m.add(new ArrayList<>());
-            for (int j = 0; j < column; j++)
+            for (int j = 0; j < width; j++)
             {
-                m.get(i).add(numbers.get(counter));
-                counter++;
+                m.get(i).add(elem.get(n));
+                n++;
             }
         }
     }
@@ -102,24 +99,22 @@ public class Matrix<T>
         }
 
         List<T> column = new ArrayList<>();
-
-        for (List<T> col : m)
+        for (List<T> row : m)
         {
-            column.add(col.get(width));
+            column.add(row.get(width));
         }
-
         return column;
     }
 
     @Override
-    public boolean equals(Object other)
+    public boolean equals(Object obj)
     {
-        if (this == other)
+        if (this == obj)
         {
             return true;
         }
 
-        if (!(other instanceof Matrix<?> matrix))
+        if (!(obj instanceof Matrix<?> matrix))
         {
             return false;
         }
@@ -160,10 +155,10 @@ public class Matrix<T>
         return hash;
     }
 
-
     public static int[][] rowMatrix(int size)
     {
         int[][] m = new int[1][size];
+
         for (int j = 0; j < size; j++)
         {
             m[0][j] = (int) (Math.random()*100);
@@ -174,16 +169,16 @@ public class Matrix<T>
 
     public Matrix<T> transposed()
     {
-        ArrayList<T> newValues = new ArrayList<>();
+        ArrayList<T> transposeValues = new ArrayList<>();
 
         for (int j = 0; j < width; j++)
         {
             for (int i = 0; i < height; i++)
             {
-                newValues.add(m.get(i).get(j));
+                transposeValues.add(m.get(i).get(j));
             }
         }
-        return new Matrix<>(width, height, newValues);
+        return new Matrix<>(width, height, transposeValues);
     }
 
     public void print()
@@ -193,20 +188,6 @@ public class Matrix<T>
             System.out.println(list.toString());
         }
         System.out.println();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("array:" + "\n");
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                builder.append(m.get(i).get(j) + " ");
-            }
-            builder.append("\n");
-        }
-
-        return builder.toString();
     }
 
     public final int getHeight()

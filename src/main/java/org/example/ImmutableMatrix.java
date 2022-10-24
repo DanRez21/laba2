@@ -1,11 +1,10 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
-public final class ImmutableMatrix<T> {
+public final class ImmutableMatrix<T>
+{
 
     private final int height, width;
     private final List<List<T>> m;
@@ -13,10 +12,9 @@ public final class ImmutableMatrix<T> {
     //конструктор для створення пустої матриці
     public ImmutableMatrix()
     {
+        m = new ArrayList<>();
         height = 0;
         width = 0;
-
-        m = new ArrayList<>();
     }
 
     //конструктор для створення матриці заданого розміру
@@ -26,7 +24,7 @@ public final class ImmutableMatrix<T> {
         this.width = width;
 
         m = new ArrayList<>();
-
+        //заповнення матриці
         for (int i = 0; i < height; i++)
         {
             m.add(new ArrayList<>());
@@ -54,33 +52,20 @@ public final class ImmutableMatrix<T> {
         }
     }
 
-    public ImmutableMatrix(int row, int column, List<T> numbers)
+    public ImmutableMatrix(int height, int width, List<T> elem)
     {
-        this.height = row;
-        this.width = column;
+        this.height = height;
+        this.width = width;
 
         m = new ArrayList<>();
-        int counter = 0;
-        for (int i = 0; i < row; i++)
-        {
-            m.add(new ArrayList<>());
-            for (int j = 0; j < column; j++)
-            {
-                m.get(i).add(numbers.get(counter));
-                counter++;
-            }
-        }
-    }
-
-    public void fillMatrix(List<T> numList)
-    {
-        int counter = 0;
+        int n = 0;
         for (int i = 0; i < height; i++)
         {
+            m.add(new ArrayList<>());
             for (int j = 0; j < width; j++)
             {
-                m.get(i).set(j, numList.get(counter));
-                counter++;
+                m.get(i).add(elem.get(n));
+                n++;
             }
         }
     }
@@ -113,24 +98,22 @@ public final class ImmutableMatrix<T> {
         }
 
         List<T> column = new ArrayList<>();
-
-        for (List<T> col : m)
+        for (List<T> row : m)
         {
-            column.add(col.get(width));
+            column.add(row.get(width));
         }
-
         return column;
     }
 
     @Override
-    public boolean equals(Object other)
+    public boolean equals(Object obj)
     {
-        if (this == other)
+        if (this == obj)
         {
             return true;
         }
 
-        if (!(other instanceof Matrix<?> matrix))
+        if (!(obj instanceof Matrix<?> matrix))
         {
             return false;
         }
