@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Matrix<T>
 {
     public int height, width;
+    public Class<?> type;
     public List<List<T>> m;
 
     //конструктор для створення пустої матриці
@@ -39,6 +40,7 @@ public class Matrix<T>
     //конструктор для копіювання матриці
     public Matrix(Matrix<T> matrix)
     {
+        type = matrix.type;
         height = matrix.height;
         width = matrix.width;
 
@@ -55,6 +57,7 @@ public class Matrix<T>
 
     public Matrix(int height, int width, List<T> elem)
     {
+        type = elem.get(0).getClass();
         this.height = height;
         this.width = width;
 
@@ -114,7 +117,7 @@ public class Matrix<T>
             return true;
         }
 
-        if (!(obj instanceof Matrix<?> matrix))
+        if (!(obj instanceof Matrix<?> matrix) || getClass() != obj.getClass())
         {
             return false;
         }
@@ -155,7 +158,7 @@ public class Matrix<T>
         return hash;
     }
 
-    public static int[][] rowMatrix(int size)
+    public int[][] rowMatrix(int size)
     {
         int[][] m = new int[1][size];
 
@@ -179,6 +182,21 @@ public class Matrix<T>
             }
         }
         return new Matrix<>(width, height, transposeValues);
+    }
+
+    public Matrix<T> sum (Matrix<T> matrix)
+    {
+        ArrayList<T> newValues = new ArrayList<>();
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                newValues.add((T) (this.m.get(i).get(j).toString() + matrix.m.get(i).get(j).toString()));
+            }
+        }
+
+        return new Matrix<>(height, width, newValues);
     }
 
     public void print()
@@ -208,5 +226,15 @@ public class Matrix<T>
     public final List<List<T>> getValues()
     {
         return m;
+    }
+
+    public final Class<?> getClas()
+    {
+        return type;
+    }
+
+    public void setNumber(int i, int j, T element)
+    {
+        this.m.get(i).add(element);
     }
 }

@@ -113,7 +113,7 @@ public final class ImmutableMatrix<T>
             return true;
         }
 
-        if (!(obj instanceof Matrix<?> matrix))
+        if (!(obj instanceof Matrix<?> matrix) || getClass() != obj.getClass())
         {
             return false;
         }
@@ -161,6 +161,32 @@ public final class ImmutableMatrix<T>
             System.out.println(list.toString());
         }
         System.out.println();
+    }
+
+    public int[][] rowMatrix(int size)
+    {
+        int[][] m = new int[1][size];
+
+        for (int j = 0; j < size; j++)
+        {
+            m[0][j] = (int) (Math.random()*100);
+        }
+
+        return m;
+    }
+
+    public ImmutableMatrix<T> transposed()
+    {
+        ArrayList<T> transposeValues = new ArrayList<>();
+
+        for (int j = 0; j < width; j++)
+        {
+            for (int i = 0; i < height; i++)
+            {
+                transposeValues.add(m.get(i).get(j));
+            }
+        }
+        return new ImmutableMatrix<>(width, height, transposeValues);
     }
 
     public final int getHeight()
